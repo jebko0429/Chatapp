@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Panel</title>
+</head>
+<body>
+    <h2>Pending Registrations</h2>
+<form method="POST">
+    <table border="1">
+        <tr>
+            <th>Username</th>
+            <th>Action</th>
+        </tr>
+        {% for user_id, username in pending_users %}
+        <tr>
+            <td>{{ username }}</td>
+            <td>
+                <button type="submit" name="action" value="approve" formaction="/admin?user_id={{ user_id }}">Approve</button>
+                <button type="submit" name="action" value="reject" formaction="/admin?user_id={{ user_id }}">Reject</button>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</form>
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatroom</title>
+</head>
+<body>
+    <h2>Welcome, {{ username }}!</h2>
+    <div id="chat-box" style="height: 300px; overflow-y: scroll; border: 1px solid #000; margin-bottom: 10px;">
+    {% for username, message, timestamp in messages %}
+        <div>[{{ timestamp }}] {{ username }}: {{ message }}</div>
+    {% endfor %}
+</div>
+    <form id="message-form">
+        <input type="text" id="message" placeholder="Type your message" required>
+        <button type="submit">Send</button>
+    </form><br>
+    <a href="/logout">Logout</a>
+
+
+
+    <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
+    <script>
+        const socket = io();
+        const chatBox = document.getElementById("chat-box");
+        const messageForm = document.getElementById("message-form");
+        const messageInput = document.getElementById("message");
+
+        socket.on("message", (data) => {
+            const messageElement = document.createElement("div");
+            messageElement.textContent = `[${data.timestamp}] ${data.username}: ${data.message}`;
+            chatBox.appendChild(messageElement);
+            chatBox.scrollTop = chatBox.scrollHeight;
+        });
+
+        messageForm.addEventListener("submit", (e) => {
+            e.preventDefault();
+            socket.send(messageInput.value);
+            messageInput.value = "";
+        });
+    </script>
+</body>
+</html>
