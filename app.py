@@ -10,6 +10,11 @@ app.secret_key = "your_secret_key_here"  # Replace with a strong secret key
 bcrypt = Bcrypt(app)
 socketio = SocketIO(app)
 
+#admin credentials
+ADMIN_USERNAME = "admin"
+ADMIN_PASSWORD = "pass"
+
+
 # Database initialization
 def init_db():
     conn = sqlite3.connect("users.db")
@@ -110,6 +115,8 @@ def handle_message(msg):
     conn.close()
     send({"username": username, "message": msg, "timestamp": timestamp}, broadcast=True)
 
+#old
+"""
 @app.route("/admin", methods=["GET", "POST"])
 def admin():
     if request.method == "POST":
@@ -136,7 +143,59 @@ def admin():
     pending_users = c.fetchall()
     conn.close()
     return render_template("admin.html", pending_users=pending_users)
+"""
+###new
+# Admin Login Route
+@app.route("/admin-login", methods=["GET", "POST"])
+def admin_login():
+    if request.method == "POST":
+        username = request.form["username"]
+        password = request.form["password"]
 
+        if username == ADMIN_USERNAME and password == ADMIN_PASSWORD:
+            session["admin"] = True
+            return redirect(url_for("admin"))
+        else:
+            return render_template("admin_login.html", error="Invalid credentials.")
+
+    return render_template("admin_login.html")
+
+# Admin Page Route
+@app.route("/admin", methods=["GET", "POST"])
+def admin():
+    if "admin" not in session:
+        return redirect(url_for("admin_login"))
+
+    conn = sqlite3.connect("users.db")
+    c = conn.cursor()
+    c.execute("SELECT id, username FROM users WHERE status='pending'")
+    pending_users = c.fetchall()
+    conn.close()
+
+    if request.method == "POST":
+        user_id = request.form.get("user_id")
+        action = request.form.get("action")
+
+        if user_id and action:
+            conn = sqlite3.connect("users.db")
+            c = conn.cursor()
+            if action == "approve":
+                c.execute("UPDATE users SET status='approved' WHERE id=?", (user_id,))
+            elif action == "reject":
+                c.execute("DELETE FROM users WHERE id=?", (user_id,))
+            conn.commit()
+            conn.close()
+
+        return redirect(url_for("admin"))
+
+    return render_template("admin.html", pending_users=pending_users)
+
+# Admin Logout
+@app.route("/admin-logout")
+def admin_logout():
+    session.pop("admin", None)
+    return redirect(url_for("admin_login"))
+#####
 @app.route("/logout")
 def logout():
     session.pop("user", None)

@@ -1,22 +1,27 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chatroom</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
 </head>
-<body>
-    <h2>Welcome, {{ username }}!</h2>
-    <div id="chat-box" style="height: 300px; overflow-y: scroll; border: 1px solid #000; margin-bottom: 10px;">
-    {% for username, message, timestamp in messages %}
-        <div>[{{ timestamp }}] {{ username }}: {{ message }}</div>
-    {% endfor %}
-</div>
-    <form id="message-form">
-        <input type="text" id="message" placeholder="Type your message" required>
-        <button type="submit">Send</button>
-    </form><br>
-    <a href="/logout">Logout</a>
-
-
+<body class="bg-gray-100 flex flex-col items-center justify-center min-h-screen">
+    <div class="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+        <h2 class="text-2xl font-bold mb-4">Welcome, {{ username }}!</h2>
+        <div id="chat-box" class="h-64 overflow-y-scroll border border-gray-300 p-4 mb-4 rounded">
+            {% for username, message, timestamp in messages %}
+                <div class="mb-2"><span class="text-gray-500">[{{ timestamp }}]</span> <span class="font-semibold">{{ username }}</span>: {{ message }}</div>
+            {% endfor %}
+        </div>
+        <form id="message-form" class="flex">
+            <input type="text" id="message" class="flex-grow border border-gray-300 rounded-l px-4 py-2 focus:outline-none" placeholder="Type your message" required>
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-r hover:bg-blue-600 focus:outline-none">Send</button>
+        </form>
+        <br>
+        <a href="/logout" class="text-blue-500 hover:underline">Logout</a>
+    </div>
 
     <script src="https://cdn.socket.io/4.5.1/socket.io.min.js"></script>
     <script>
@@ -27,7 +32,8 @@
 
         socket.on("message", (data) => {
             const messageElement = document.createElement("div");
-            messageElement.textContent = `[${data.timestamp}] ${data.username}: ${data.message}`;
+            messageElement.classList.add("mb-2");
+            messageElement.innerHTML = `<span class="text-gray-500">[${data.timestamp}]</span> <span class="font-semibold">${data.username}</span>: ${data.message}`;
             chatBox.appendChild(messageElement);
             chatBox.scrollTop = chatBox.scrollHeight;
         });
@@ -40,3 +46,4 @@
     </script>
 </body>
 </html>
+
