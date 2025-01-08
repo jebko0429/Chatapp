@@ -5,12 +5,12 @@ click==8.1.8
 Flask==3.1.0
 Flask-Bcrypt==1.0.1
 Flask-SocketIO==5.5.0
-grpcio @ file:///home/builder/.termux-build/python-grpcio/src
+#grpcio @ file:///home/builder/.termux-build/python-grpcio/src
 h11==0.14.0
 itsdangerous==2.2.0
 Jinja2==3.1.5
 MarkupSafe==3.0.2
-pillow @ file:///home/builder/.termux-build/python-pillow/src
+#pillow @ file:///home/builder/.termux-build/python-pillow/src
 python-engineio==4.11.2
 python-socketio==5.12.1
 simple-websocket==1.1.0
