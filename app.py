@@ -4,6 +4,8 @@ from flask_socketio import SocketIO, send, emit
 import sqlite3
 from datetime import datetime
 import eventlet
+import os
+
 
 
 # Initialize Flask app and libraries
@@ -205,7 +207,11 @@ def logout():
     session.pop("user", None)
     flash("Logged out successfully.", "info")
     return redirect(url_for("login"))
-
+"""
 # Run the Flask app
 if __name__ == "__main__":
     socketio.run(app, debug=True, host="0.0.0.0", port=5000)
+"""
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    socketio.run(app, host="0.0.0.0", port=port)
