@@ -1,4 +1,4 @@
-⁹from flask import Flask, render_template, request, session, redirect, url_for, flash
+from flask import Flask, render_template, request, session, redirect, url_for, flash
 from flask_bcrypt import Bcrypt
 from flask_socketio import SocketIO, send, emit
 import sqlite3
