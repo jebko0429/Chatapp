@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for, flash
+⁹from flask import Flask, render_template, request, session, redirect, url_for, flash
 from flask_bcrypt import Bcrypt
 from flask_socketio import SocketIO, send, emit
 import sqlite3
@@ -10,7 +10,7 @@ import eventlet
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"  # Replace with a strong secret key
 bcrypt = Bcrypt(app)
-socketio = SocketIO(app)
+#socketio = SocketIO(app)
 
 socketio = SocketIO(app, async_mode="eventlet", cors_allowed_origins="*")
 
