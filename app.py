@@ -6,16 +6,13 @@ from datetime import datetime
 import eventlet
 
 
-socketio = SocketIO(app, async_mode="eventlet", cors_allowed_origins="*")
-
-
-
-
 # Initialize Flask app and libraries
 app = Flask(__name__)
 app.secret_key = "your_secret_key_here"  # Replace with a strong secret key
 bcrypt = Bcrypt(app)
 socketio = SocketIO(app)
+
+socketio = SocketIO(app, async_mode="eventlet", cors_allowed_origins="*")
 
 #admin credentials
 ADMIN_USERNAME = "admin"
