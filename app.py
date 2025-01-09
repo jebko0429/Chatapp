@@ -1,8 +1,15 @@
 from flask import Flask, render_template, request, session, redirect, url_for, flash
 from flask_bcrypt import Bcrypt
-from flask_socketio import SocketIO, send
+from flask_socketio import SocketIO, send, emit
 import sqlite3
 from datetime import datetime
+import eventlet
+
+
+socketio = SocketIO(app, async_mode="eventlet", cors_allowed_origins="*")
+
+
+
 
 # Initialize Flask app and libraries
 app = Flask(__name__)
